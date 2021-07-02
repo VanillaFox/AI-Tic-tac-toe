@@ -28,6 +28,7 @@ class Game{
                 std::cout << (*it);
             }
         }
+        std::cout << "Hello" << std::endl;
     }
 
     public:
