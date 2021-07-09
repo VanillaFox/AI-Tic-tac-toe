@@ -216,7 +216,6 @@ void Game::CheckWinnner(std::string symbol){
         if(symbol == X) win = Win(positionX);
         else win = Win(positionO);
         gameOver = win;
-        
     }
 }
 
