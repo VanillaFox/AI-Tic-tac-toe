@@ -2,14 +2,17 @@
 #include <string>
 #include <vector>
 #include <unistd.h>
+#include <algorithm>
+#include "player.h"
+
 //смена хода
 
 class Game{
     bool game, moveMade, gameOver;
     std::vector<std::string>::iterator location;
-    int player, stringOfTable, columnOfTable;
+    int playerNumber, stringOfTable, columnOfTable;
     int countX, countO, winLine = 3;
-    std::string curSymbol, playingSymbol;
+    std::string curSymbol/*, playingSymbol*/;
     std::string X = "X", O = "O", cursor = "@", space = " ";
     enum Dirs{
         NEUTRAL,
@@ -20,6 +23,7 @@ class Game{
         ENTER
     };
     Dirs dir;
+    Player player1, player2, *player;
     std::vector<std::vector<std::string>> table{
         {"       |       |       \n"},
         {"   ", " ", "   |   ", " ", "   |   ", " ", "   \n"},
@@ -47,7 +51,7 @@ class Game{
     
     void PrintTable();
     void SwitchPlayerSymbol();
-    void SetPlayerSymbol();
+    bool SetPlayerSymbol();
     void BackSymbol();
     void SetCursor();
     void OnBeginningLine();

@@ -1,6 +1,5 @@
 #include "game.h"
 #include "input.h"
-#include <algorithm>
 
 void Game::PrintTable(){
     for(int i = 0; i < table.size(); i++){
@@ -33,6 +32,7 @@ void Game::EnterMove(){
                 gameOver = true;
                 break;
             case 'e':
+                //закрепление выбора
                 dir = ENTER;
                 break;
             default:
@@ -134,10 +134,9 @@ void Game::Move(){
             break;
 
         case 5:
-            //закрепление выбора
-            SetPlayerSymbol();
+            if(!SetPlayerSymbol()) break;
+            CheckWinnner(player->Symbol());
             SwitchPlayerSymbol();
-            CheckWinnner(curSymbol);
             SetNeuDir();
             break;
 
@@ -146,38 +145,36 @@ void Game::Move(){
     }
 }
 
-void Game::SetPlayerSymbol(){
-    *location = playingSymbol;
-    curSymbol = playingSymbol;
+bool Game::SetPlayerSymbol(){
+    if(curSymbol == " "){
+        *location = player->Symbol();
+        curSymbol = player->Symbol();
+        player->AddPosition(columnOfTable + stringOfTable - stringOfTable/4 - 1);
+        return true;
+    }
+    return false;
 }
 
 void Game::SwitchPlayerSymbol(){
-    if(player){
-        playingSymbol = O;
-        countX++;
-        positionX.push_back(columnOfTable + stringOfTable - stringOfTable/4 - 1);
-    }
-    else{
-        playingSymbol = X;
-        countO++;
-        positionO.push_back(columnOfTable + stringOfTable - stringOfTable/4 - 1);
-    }
-    player = (player + 1) % 2;
+    if(playerNumber)
+        player = &player2;
+    else
+        player = &player1;
+    playerNumber = (playerNumber + 1) % 2;
 }
 
 
 void Game::StartPosition(){
     stringOfTable = 1;
-    player = 1;
-    playingSymbol = X;
+    playerNumber = 1;
     columnOfTable = 1;
     OnBeginningLine();
     SetCursor();
 }
 
-void Game::SwichPlayer(){}
 
-Game::Game():gameOver(false), countO(0), countX(0){
+Game::Game():gameOver(false), countO(0), countX(0), player1(X), player2(O){
+    player = &player1;
     StartGame();
 }
 
@@ -186,11 +183,13 @@ void Game::StartGame(){
     StartPosition();
     while(!gameOver){
         int r = std::system("clear");
+        std::cout << "Now is " << player->Symbol() << "'s step!\n";
         EnterMove();
         Move();
         PrintTable();
         usleep(7700);
     }
+    std::cout << curSymbol << " is win!\n";
     std::cout << "EXIT\n";
 }
 
@@ -203,19 +202,15 @@ bool Game::Win(std::vector<int> positions){
             it = std::find(positions.begin(), positions.end(), winStrategy[i][j]);
             if(it == positions.end()) win = false;
         }
-        if(win){
-            return win;
-        }
+        if(win) return win;
     }
     return win;
 }
 
 void Game::CheckWinnner(std::string symbol){
-    bool check = false, win;
-    if((symbol == X && countX > 2) || (symbol == O && countO > 2)){
-        if(symbol == X) win = Win(positionX);
-        else win = Win(positionO);
-        gameOver = win;
+    if(player->Count() > 2){
+        gameOver = Win(player->Positions());
+        std::cout << "HERE!\n";
     }
 }
 
