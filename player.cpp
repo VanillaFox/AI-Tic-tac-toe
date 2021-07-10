@@ -17,5 +17,10 @@ void Player::AddPosition(int a){
     countOfElems++;
 }
 
+void Player::ClearAll(){
+    positions.clear();
+    countOfElems = 0;
+}
+
 Player::Player(){}
 Player::Player(std::string a): symbol(a), countOfElems(0){}

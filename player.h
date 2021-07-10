@@ -12,4 +12,5 @@ class Player{
     void AddPosition(int a);
     Player(std::string a);
     Player();
+    void ClearAll();
 };

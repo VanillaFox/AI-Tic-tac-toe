@@ -149,6 +149,7 @@ bool Game::SetPlayerSymbol(){
     if(curSymbol == " "){
         *location = player->Symbol();
         curSymbol = player->Symbol();
+        //вынести номер позиции в отдельную функцию
         player->AddPosition(columnOfTable + stringOfTable - stringOfTable/4 - 1);
         return true;
     }
@@ -176,6 +177,7 @@ void Game::StartPosition(){
 Game::Game():gameOver(false), countO(0), countX(0), player1(X), player2(O){
     player = &player1;
     StartGame();
+    //map.LeftMove();
 }
 
 void Game::StartGame(){
@@ -187,11 +189,26 @@ void Game::StartGame(){
         EnterMove();
         Move();
         PrintTable();
+        if(winGame){
+            std::cout << curSymbol << " is win!\n";
+            std::cout << "You want to replay the game? [y/n] ";
+            std::cin >> choice;
+            if(choice[0] == 'n' || choice[0] == 'N')
+                gameOver = true;
+            else 
+                RestartGame();
+        }
         usleep(7700);
     }
-    std::cout << curSymbol << " is win!\n";
     std::cout << "EXIT\n";
 }
+
+void Game::RestartGame(){
+    player1.ClearAll();
+    player2.ClearAll();
+    player = &player1;
+}
+
 
 bool Game::Win(std::vector<int> positions){
     bool win;
@@ -209,9 +226,6 @@ bool Game::Win(std::vector<int> positions){
 
 void Game::CheckWinnner(std::string symbol){
     if(player->Count() > 2){
-        gameOver = Win(player->Positions());
-        std::cout << "HERE!\n";
+        winGame = Win(player->Positions());
     }
 }
-
-// void Game::

@@ -4,15 +4,17 @@
 #include <unistd.h>
 #include <algorithm>
 #include "player.h"
+#include "map.h"
 
 //смена хода
 
 class Game{
-    bool game, moveMade, gameOver;
+    bool winGame, gameOver;
+    Map map;
     std::vector<std::string>::iterator location;
     int playerNumber, stringOfTable, columnOfTable;
     int countX, countO, winLine = 3;
-    std::string curSymbol/*, playingSymbol*/;
+    std::string curSymbol, choice;
     std::string X = "X", O = "O", cursor = "@", space = " ";
     enum Dirs{
         NEUTRAL,
@@ -37,7 +39,7 @@ class Game{
         {"   ", " ", "   |   ", " ", "   |   ", " ", "   \n"},
         {"       |       |       \n"}
         };
-    std::vector<int> positionX, positionO;
+    //std::vector<int> positionX, positionO;
     std::vector<std::vector<int>> winStrategy{
         {1, 2, 3},
         {4, 5, 6},
@@ -68,6 +70,7 @@ class Game{
     void CheckWinnner(std::string symbol);
     void StartGame();
     bool Win(std::vector<int> positions);
+    void RestartGame();
     public:
     Game();
     
