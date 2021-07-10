@@ -6,8 +6,6 @@
 #include "player.h"
 #include "map.h"
 
-//смена хода
-
 class Game{
     bool winGame, gameOver;
     Map map;

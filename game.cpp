@@ -1,5 +1,7 @@
 #include "game.h"
 #include "input.h"
+#include "player.h"
+#include "map.h"
 
 void Game::PrintTable(){
     for(int i = 0; i < table.size(); i++){
@@ -106,30 +108,34 @@ void Game::Move(){
             break;
 
         case 1:
-            if(stringOfTable > 1){
-                UpDownMoveCursor('u');
-            }
+            // if(stringOfTable > 1){
+            //     UpDownMoveCursor('u');
+            // }
+            map.Move('u');
             SetNeuDir();
             break;
 
         case 2:
-            if(stringOfTable < 9){
-                UpDownMoveCursor('d');
-            }
+            // if(stringOfTable < 9){
+            //     UpDownMoveCursor('d');
+            // }
+            map.Move('d');
             SetNeuDir();
             break;
 
         case 3:
-            if(columnOfTable != 1){
-                LeftRightMoveCursor('l');
-            }
+            // if(columnOfTable != 1){
+            //     LeftRightMoveCursor('l');
+            // }
+            map.Move('l');
             SetNeuDir();
             break;
 
         case 4:
-            if(columnOfTable != 3){
-                LeftRightMoveCursor('r');
-            }
+            // if(columnOfTable != 3){
+            //     LeftRightMoveCursor('r');
+            // }
+            map.Move('r');
             SetNeuDir();
             break;
 
@@ -166,41 +172,53 @@ void Game::SwitchPlayerSymbol(){
 
 
 void Game::StartPosition(){
-    stringOfTable = 1;
+    //stringOfTable = 1;
     playerNumber = 1;
-    columnOfTable = 1;
-    OnBeginningLine();
-    SetCursor();
+
+    //columnOfTable = 1;
+    //OnBeginningLine();
+    //SetCursor();
 }
 
 
 Game::Game():gameOver(false), countO(0), countX(0), player1(X), player2(O){
     player = &player1;
     StartGame();
-    //map.LeftMove();
 }
 
+// void Game::StartGame(){
+//     PrintTable();
+//     StartPosition();
+//     while(!gameOver){
+//         int r = std::system("clear");
+//         std::cout << "Now is " << player->Symbol() << "'s step!\n";
+//         EnterMove();
+//         Move();
+//         PrintTable();
+//         if(winGame){
+//             std::cout << curSymbol << " is win!\n";
+//             std::cout << "Want to replay? [y/n] ";
+//             std::cin >> choice;
+//             if(choice[0] == 'n' || choice[0] == 'N')
+//                 gameOver = true;
+//             else 
+//                 RestartGame();
+//         }
+//         usleep(7700);
+//     }
+//     std::cout << "EXIT\n";
+// }
+
 void Game::StartGame(){
-    PrintTable();
-    StartPosition();
+    map.PrintTable();
+    playerNumber = 1;
     while(!gameOver){
         int r = std::system("clear");
-        std::cout << "Now is " << player->Symbol() << "'s step!\n";
         EnterMove();
         Move();
-        PrintTable();
-        if(winGame){
-            std::cout << curSymbol << " is win!\n";
-            std::cout << "You want to replay the game? [y/n] ";
-            std::cin >> choice;
-            if(choice[0] == 'n' || choice[0] == 'N')
-                gameOver = true;
-            else 
-                RestartGame();
-        }
+        map.PrintTable();
         usleep(7700);
     }
-    std::cout << "EXIT\n";
 }
 
 void Game::RestartGame(){
