@@ -37,10 +37,14 @@ class Game{
     void SwichPlayer();
     void Move();
     void EnterMove();
-    int CheckWinnner();
     void StartGame();
     void RestartGame();
+    void WinText();
+    void Replay();
+    void WhoPlayText();
+    void FinalWinText();
     int Win();
+    int CheckWinnner();
 
     public:
     Game();

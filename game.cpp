@@ -3,6 +3,32 @@
 #include "player.h"
 #include "map.h"
 
+
+Game::Game():gameOver(false), playerNumber(1), player1(X), player2(O), winNumber(0){
+    player = &player1;
+    StartGame();
+}
+
+
+void Game::StartGame(){
+    while(!gameOver){
+        int r = std::system("clear");
+        WhoPlayText();
+        EnterMove();
+        Move();
+        map.PrintTable();
+        usleep(7700);
+        if(winNumber){
+            player->Win();
+            WinText();
+            Replay();
+        }
+    }
+    FinalWinText();
+    std::cout << "EXIT!\n";
+}
+
+
 void Game::EnterMove(){
     if(kbhit()){
         switch (getch()){
@@ -31,9 +57,6 @@ void Game::EnterMove(){
     }
 }
 
-void Game::SetNeuDir(){
-    dir = NEUTRAL;
-}
 
 void Game::Move(){
     switch(dir){
@@ -76,50 +99,18 @@ void Game::Move(){
     }
 }
 
+
+void Game::SetNeuDir(){
+    dir = NEUTRAL;
+}
+
+
 void Game::SwitchPlayerSymbol(){
     if(playerNumber)
         player = &player2;
     else
         player = &player1;
     playerNumber = (playerNumber + 1) % 2;
-}
-
-Game::Game():gameOver(false), playerNumber(1), player1(X), player2(O), winNumber(0){
-    player = &player1;
-    StartGame();
-}
-
-void Game::StartGame(){
-    while(!gameOver){
-        int r = std::system("clear");
-        std::cout << "Now is " << player->Symbol() << "'s step!\n";
-        EnterMove();
-        Move();
-        map.PrintTable();
-        usleep(7700);
-        if(winNumber){
-            player->Win();
-            std::cout << player->Symbol() << " is win!\n";
-            std::cout << "Current score:\n PlayerX: " << player1.Score() << "\n PlayerO: " << player2.Score();
-            std::cout << "\nWant to replay? [y/n] ";
-            std::cin >> choice;
-            if(choice == "N" || choice == "n") gameOver = true;
-            else RestartGame();
-        }
-    }
-    if(player1.Score() > player2.Score()) player = &player1;
-    else player = &player2;
-    std::cout << player->Symbol() << " is win!\n";
-    std::cout << "EXIT!\n";
-}
-
-void Game::RestartGame(){
-    player1.ClearAll();
-    player2.ClearAll();
-    player = &player1;
-    playerNumber = 1;
-    winNumber = 0;
-    map.RestartMap();
 }
 
 
@@ -137,7 +128,43 @@ int Game::Win(){
     return 0;
 }
 
+
 int Game::CheckWinnner(){
     if(player->Count() > 2) winNumber = Win();
     return winNumber;
+}
+
+
+void Game::Replay(){
+    std::cin >> choice;
+    if(choice == "N" || choice == "n") gameOver = true;
+    else RestartGame();
+}
+
+
+void Game::RestartGame(){
+    player1.ClearAll();
+    player2.ClearAll();
+    player = &player1;
+    playerNumber = 1;
+    winNumber = 0;
+    map.RestartMap();
+}
+
+void Game::WhoPlayText(){
+    std::cout << "Now is " << player->Symbol() << "'s step!\n";
+}
+
+
+void Game::WinText(){
+    std::cout << player->Symbol() << " is win!\n";
+    std::cout << "Current score:\n PlayerX: " << player1.Score() << "\n PlayerO: " << player2.Score();
+    std::cout << "\nWant to replay? [y/n] ";
+}
+
+
+void Game::FinalWinText(){
+    if(player1.Score() > player2.Score()) player = &player1;
+    else player = &player2;
+    std::cout << player->Symbol() << " is win!\n";
 }
