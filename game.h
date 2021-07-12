@@ -9,11 +9,10 @@
 class Game{
     bool winGame, gameOver;
     Map map;
-    std::vector<std::string>::iterator location;
-    int playerNumber, stringOfTable, columnOfTable;
-    int countX, countO, winLine = 3;
-    std::string curSymbol, choice;
-    std::string X = "X", O = "O", cursor = "@", space = " ";
+    int playerNumber;
+    int winLine = 3;
+    std::string choice;
+    std::string X = "X", O = "O";
     enum Dirs{
         NEUTRAL,
         UP,
@@ -24,20 +23,6 @@ class Game{
     };
     Dirs dir;
     Player player1, player2, *player;
-    std::vector<std::vector<std::string>> table{
-        {"       |       |       \n"},
-        {"   ", " ", "   |   ", " ", "   |   ", " ", "   \n"},
-        {"       |       |       \n"},
-        {"-----------------------\n"},
-        {"       |       |       \n"},
-        {"   ", " ", "   |   ", " ", "   |   ", " ", "   \n"},
-        {"       |       |       \n"},
-        {"-----------------------\n"},
-        {"       |       |       \n"},
-        {"   ", " ", "   |   ", " ", "   |   ", " ", "   \n"},
-        {"       |       |       \n"}
-        };
-    //std::vector<int> positionX, positionO;
     std::vector<std::vector<int>> winStrategy{
         {1, 2, 3},
         {4, 5, 6},
@@ -49,25 +34,14 @@ class Game{
         {3, 5, 7}
     };
     
-    void PrintTable();
     void SwitchPlayerSymbol();
-    bool SetPlayerSymbol();
-    void BackSymbol();
-    void SetCursor();
-    void OnBeginningLine();
-    void MoveToRightColomn();
-    void UpDownMoveCursor(char a);
-    void UpDownMove(char a);
-    void LeftRightMove(char a);
-    void LeftRightMoveCursor(char a);
     void SetNeuDir();
     void SwichPlayer();
     void Move();
     void EnterMove();
-    void StartPosition();
-    void CheckWinnner(std::string symbol);
+    void CheckWinnner();
     void StartGame();
-    bool Win(std::vector<int> positions);
+    bool Win();
     void RestartGame();
     public:
     Game();

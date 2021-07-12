@@ -4,8 +4,8 @@ std::string Player::Symbol(){
     return symbol;
 }
 
-std::vector<int> Player::Positions(){
-    return positions;
+std::vector<int>* Player::Positions(){
+    return &positions;
 }
 
 int Player::Count(){

@@ -21,18 +21,10 @@ Map::Map(){
 }
 
 void Map::Move(char a){
-    if(a == 'l'){
-        MoveLeft();
-    }
-    else if(a == 'r'){
-        MoveRight();
-    }
-    else if(a == 'u'){
-        MoveUp();
-    }
-    else if(a == 'd'){
-        MoveDown();
-    }
+    if(a == 'l') MoveLeft();
+    else if(a == 'r') MoveRight();
+    else if(a == 'u') MoveUp();
+    else if(a == 'd') MoveDown();
 }
 
 
@@ -48,10 +40,18 @@ void Map::MoveToColomn(){
     }
 }
 
-void Map::SetSym(Player play){
-    *iter = play.Symbol();
-    curSymbol = play.Symbol();
-    play.AddPosition(Position());
+bool Map::SetPlayerSym(Player* a){
+    if(curSymbol == " "){
+        SetSym(a);
+        return true;
+    }
+    return false;
+}
+
+void Map::SetSym(Player* play){
+    *iter = play->Symbol();
+    curSymbol = play->Symbol();
+    play->AddPosition(Position());
 }
 
 int Map::Position(){
@@ -59,10 +59,7 @@ int Map::Position(){
 }
 
 void Map::MoveDown(){
-    if(strNumber < intervBetwStrs*2 + startStr){
-        // std::cout << "DOWN!\n";
-        Down();
-    }
+    if(strNumber < intervBetwStrs*2 + startStr) Down();
 }
 
 void Map::Down(){
@@ -74,9 +71,7 @@ void Map::Down(){
 }
 
 void Map::MoveUp(){
-    if(strNumber > startStr){
-        Up();
-    }
+    if(strNumber > startStr) Up();
 }
 
 void Map::Up(){
@@ -88,9 +83,7 @@ void Map::Up(){
 }
 
 void Map::MoveLeft(){
-    if(colNumber > startCol){
-        Left();
-    }        
+    if(colNumber > startCol) Left();    
 }
 
 void Map::Left(){
@@ -102,9 +95,7 @@ void Map::Left(){
 }
 
 void Map::MoveRight(){
-    if(colNumber < intervBetwCols*2 + startCol){
-        Right();
-    }
+    if(colNumber < intervBetwCols*2 + startCol) Right();
 }
 
 void Map::Right(){
@@ -125,7 +116,6 @@ void Map::SetSymbol(){
 }
 
 void Map::PrintTable(){
-    std::cout << startCol << " " << startStr << std::endl;
     for(int i = 0; i < table.size(); i++){
         for(std::vector<std::string>::iterator it = table[i].begin(); it != table[i].end(); it++){
             std::cout << (*it);

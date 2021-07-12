@@ -20,7 +20,7 @@ class Map{
     void Down();
     void NewLine();
     void MoveToColomn();
-    void SetSym(Player a);
+    void SetSym(Player* a);
     void SetCursor();
     void SetSymbol();
     void Choice();
@@ -30,4 +30,5 @@ class Map{
     Map();
     void Move(char a);
     void PrintTable();
+    bool SetPlayerSym(Player* a);
 };

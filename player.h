@@ -8,7 +8,7 @@ class Player{
 
     public:
     std::string Symbol();
-    std::vector<int> Positions();
+    std::vector<int>* Positions();
     int Count();
     void AddPosition(int a);
     Player(std::string a);
