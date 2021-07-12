@@ -5,10 +5,25 @@
 
 class Map{
     std::vector<std::vector<std::string>> table;
+    std::vector<std::vector<std::string>> startTable = {
+        {" ", " ", " ", "7", " ", " ", " | ", " ", " ", "7", " ", " ", " | ", " ", " ", "7", " ", " ", " \n"},
+        {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
+        {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
+        {"-----------------------\n"},
+        {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
+        {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
+        {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
+        {"-----------------------\n"},
+        {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
+        {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
+        {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"}
+    };
+
+
     std::vector<std::string>::iterator iter;
     int strNumber, colNumber;
-    const int startStr = 1, startCol = 1;
-    const int intervBetwStrs = 4, intervBetwCols = 1;
+    const int startStr = 1, startCol = 3;
+    const int intervBetwStrs = 4, intervBetwCols = 6;
     std::string curSymbol, cursor = "@", playerSym;
     void MoveLeft();
     void Left();
@@ -24,11 +39,16 @@ class Map{
     void SetCursor();
     void SetSymbol();
     void Choice();
+    void MoveToNextCol();
+    void MoveToPrevCol();
     int Position();
+    void PrintWinLine(int a);
 
     public:
     Map();
     void Move(char a);
     void PrintTable();
     bool SetPlayerSym(Player* a);
+    void RestartMap();
+
 };

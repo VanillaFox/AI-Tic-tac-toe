@@ -1,18 +1,11 @@
 #include "map.h"
 
 Map::Map(){
-    table = {{"       |       |       \n"},
-        {"   ", " ", "   |   ", " ", "   |   ", " ", "   \n"},
-        {"       |       |       \n"},
-        {"-----------------------\n"},
-        {"       |       |       \n"},
-        {"   ", " ", "   |   ", " ", "   |   ", " ", "   \n"},
-        {"       |       |       \n"},
-        {"-----------------------\n"},
-        {"       |       |       \n"},
-        {"   ", " ", "   |   ", " ", "   |   ", " ", "   \n"},
-        {"       |       |       \n"}
-    };
+    RestartMap();
+}
+
+void Map::RestartMap(){
+    table = startTable;
     strNumber = startStr;
     colNumber = startCol;
     NewLine();
@@ -30,12 +23,13 @@ void Map::Move(char a){
 
 void Map::NewLine(){
     iter = table[strNumber].begin();
-    iter++;
+    for(int i = 0; i < startCol; i++){
+        iter++;
+    }
 }
 
 void Map::MoveToColomn(){
-    for(int i = 1; i < colNumber; i++){
-        iter++;
+    for(int i = startCol; i < colNumber; i++){
         iter++;
     }
 }
@@ -55,7 +49,7 @@ void Map::SetSym(Player* play){
 }
 
 int Map::Position(){
-    return colNumber + strNumber - strNumber/intervBetwStrs - 1;
+    return strNumber + colNumber/7 - strNumber/4;
 }
 
 void Map::MoveDown(){
@@ -88,9 +82,8 @@ void Map::MoveLeft(){
 
 void Map::Left(){
     SetSymbol();
-    iter--;
-    iter--;
-    colNumber--;
+    colNumber -= intervBetwCols;
+    MoveToPrevCol();
     SetCursor();
 }
 
@@ -98,11 +91,22 @@ void Map::MoveRight(){
     if(colNumber < intervBetwCols*2 + startCol) Right();
 }
 
+void Map::MoveToNextCol(){
+    for(int i = 0; i < intervBetwCols; i++){
+        iter++;
+    }
+}
+
+void Map::MoveToPrevCol(){
+    for(int i = 0; i < intervBetwCols; i++){
+        iter--;
+    }
+}
+
 void Map::Right(){
     SetSymbol();
-    iter++;
-    iter++;
-    colNumber++;
+    colNumber += intervBetwCols;
+    MoveToNextCol();
     SetCursor();
 }
 

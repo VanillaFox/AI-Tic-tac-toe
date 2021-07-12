@@ -62,7 +62,7 @@ void Game::Move(){
 
         case 5:
             if(!map.SetPlayerSym(player)) break;
-            CheckWinnner();
+            if(CheckWinnner()) break;
             SwitchPlayerSymbol();
             SetNeuDir();
             break;
@@ -94,6 +94,12 @@ void Game::StartGame(){
         Move();
         map.PrintTable();
         usleep(7700);
+        if(winGame){
+            std::cout << player->Symbol() << " is win!\n" << "Want to replay? [y/n] ";
+            std::cin >> choice;
+            if(choice == "N" || choice == "n") gameOver = true;
+            else RestartGame();
+        }
     }
     std::cout << "EXIT!\n";
 }
@@ -102,10 +108,12 @@ void Game::RestartGame(){
     player1.ClearAll();
     player2.ClearAll();
     player = &player1;
+    winGame = false;
+    map.RestartMap();
 }
 
 
-bool Game::Win(){
+int Game::Win(){
     bool win;
     for(int i = 0; i < winStrategy.size(); i++){
         win = true;
@@ -114,11 +122,14 @@ bool Game::Win(){
             it = std::find(player->Positions()->begin(), player->Positions()->end(), winStrategy[i][j]);
             if(it == player->Positions()->end()) win = false;
         }
-        if(win) return true;
+        if(win){    
+            return i + 1;
+        }
     }
     return false;
 }
 
-void Game::CheckWinnner(){
-    if(player->Count() > 2) gameOver = Win();
+bool Game::CheckWinnner(){
+    if(player->Count() > 2) winGame = Win();
+    return winGame;
 }

@@ -9,8 +9,7 @@
 class Game{
     bool winGame, gameOver;
     Map map;
-    int playerNumber;
-    int winLine = 3;
+    int playerNumber, winLine = 3;
     std::string choice;
     std::string X = "X", O = "O";
     enum Dirs{
@@ -39,10 +38,11 @@ class Game{
     void SwichPlayer();
     void Move();
     void EnterMove();
-    void CheckWinnner();
+    bool CheckWinnner();
     void StartGame();
-    bool Win();
     void RestartGame();
+    int Win();
+
     public:
     Game();
     
