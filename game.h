@@ -7,11 +7,10 @@
 #include "map.h"
 
 class Game{
-    bool winGame, gameOver;
+    bool  gameOver;
     Map map;
-    int playerNumber, winLine = 3;
-    std::string choice;
-    std::string X = "X", O = "O";
+    int playerNumber, winLine = 3, line, winNumber;
+    std::string X = "X", O = "O", choice;
     enum Dirs{
         NEUTRAL,
         UP,
@@ -38,7 +37,7 @@ class Game{
     void SwichPlayer();
     void Move();
     void EnterMove();
-    bool CheckWinnner();
+    int CheckWinnner();
     void StartGame();
     void RestartGame();
     int Win();

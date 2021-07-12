@@ -62,7 +62,11 @@ void Game::Move(){
 
         case 5:
             if(!map.SetPlayerSym(player)) break;
-            if(CheckWinnner()) break;
+            line = CheckWinnner();
+            if(line){
+                map.PrintWinLine(line);
+                break;
+            }
             SwitchPlayerSymbol();
             SetNeuDir();
             break;
@@ -80,13 +84,12 @@ void Game::SwitchPlayerSymbol(){
     playerNumber = (playerNumber + 1) % 2;
 }
 
-Game::Game():gameOver(false), playerNumber(1), player1(X), player2(O){
+Game::Game():gameOver(false), playerNumber(1), player1(X), player2(O), winNumber(0){
     player = &player1;
     StartGame();
 }
 
 void Game::StartGame(){
-    map.PrintTable();
     while(!gameOver){
         int r = std::system("clear");
         std::cout << "Now is " << player->Symbol() << "'s step!\n";
@@ -94,13 +97,19 @@ void Game::StartGame(){
         Move();
         map.PrintTable();
         usleep(7700);
-        if(winGame){
-            std::cout << player->Symbol() << " is win!\n" << "Want to replay? [y/n] ";
+        if(winNumber){
+            player->Win();
+            std::cout << player->Symbol() << " is win!\n";
+            std::cout << "Current score:\n PlayerX: " << player1.Score() << "\n PlayerO: " << player2.Score();
+            std::cout << "\nWant to replay? [y/n] ";
             std::cin >> choice;
             if(choice == "N" || choice == "n") gameOver = true;
             else RestartGame();
         }
     }
+    if(player1.Score() > player2.Score()) player = &player1;
+    else player = &player2;
+    std::cout << player->Symbol() << " is win!\n";
     std::cout << "EXIT!\n";
 }
 
@@ -108,7 +117,8 @@ void Game::RestartGame(){
     player1.ClearAll();
     player2.ClearAll();
     player = &player1;
-    winGame = false;
+    playerNumber = 1;
+    winNumber = 0;
     map.RestartMap();
 }
 
@@ -122,14 +132,12 @@ int Game::Win(){
             it = std::find(player->Positions()->begin(), player->Positions()->end(), winStrategy[i][j]);
             if(it == player->Positions()->end()) win = false;
         }
-        if(win){    
-            return i + 1;
-        }
+        if(win) return i + 1;
     }
-    return false;
+    return 0;
 }
 
-bool Game::CheckWinnner(){
-    if(player->Count() > 2) winGame = Win();
-    return winGame;
+int Game::CheckWinnner(){
+    if(player->Count() > 2) winNumber = Win();
+    return winNumber;
 }

@@ -6,7 +6,7 @@
 class Map{
     std::vector<std::vector<std::string>> table;
     std::vector<std::vector<std::string>> startTable = {
-        {" ", " ", " ", "7", " ", " ", " | ", " ", " ", "7", " ", " ", " | ", " ", " ", "7", " ", " ", " \n"},
+        {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
         {"-----------------------\n"},
@@ -18,7 +18,6 @@ class Map{
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"}
     };
-
 
     std::vector<std::string>::iterator iter;
     int strNumber, colNumber;
@@ -41,8 +40,11 @@ class Map{
     void Choice();
     void MoveToNextCol();
     void MoveToPrevCol();
+    void PrintVerticalLine(int a);
+    void PrintHorizontalLine(int a);
+    void PrintLeftLine(int a);
+    void PrintRightLine(int a);
     int Position();
-    void PrintWinLine(int a);
 
     public:
     Map();
@@ -50,5 +52,6 @@ class Map{
     void PrintTable();
     bool SetPlayerSym(Player* a);
     void RestartMap();
+    void PrintWinLine(int a);
 
 };

@@ -22,5 +22,13 @@ void Player::ClearAll(){
     countOfElems = 0;
 }
 
+int Player::Score(){
+    return score;
+}
+
+void Player::Win(){
+    score += 10;
+}
+
 Player::Player(){}
-Player::Player(std::string a): symbol(a), countOfElems(0){}
+Player::Player(std::string a): symbol(a), countOfElems(0), score(0){}

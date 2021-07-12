@@ -126,3 +126,65 @@ void Map::PrintTable(){
         }
     }
 }
+
+void Map::PrintWinLine(int a){
+    if(a < 4) PrintHorizontalLine(a);
+    else if(a < 7) PrintVerticalLine(a);
+    else if(a == 7) PrintLeftLine(a);
+    else if(a == 8) PrintRightLine(a);
+}
+
+void Map::PrintVerticalLine(int a){
+    int count = startCol + intervBetwCols * (a - 4);
+    for(int i = 0; i < 11; i = i+2){
+        std::vector<std::string>::iterator it = table[i].begin();
+        for(int j = 0; j < count; j++){
+            it++;
+        }
+        *it = "|";
+    }
+}
+
+void Map::PrintHorizontalLine(int a){
+    int k = startStr + intervBetwStrs*(a-1);
+    std::vector<std::string>::iterator it = table[k].begin();
+    k = 1;
+    for(int i = 0; i < 6; i++){
+        for(int j = 0; j < k; j++){
+            it++;
+        }
+        *it = "-";
+        if(k == 2 || k == 1) k = 4;
+        else k = 2;
+    }    
+}
+
+void Map::PrintLeftLine(int a){
+    int count = 1;
+    int k = 1;
+    for(int i = 0; i < 11; i = i+2){
+        std::vector<std::string>::iterator it = table[i].begin();
+        for(int j = 0; j < count; j++){
+            it++;
+        }
+        *it = "\\";
+        if(k % 2) count += 4;
+        else count += 2;
+        k++;
+    }
+}
+
+void Map::PrintRightLine(int a){
+    int k = 1;
+    int count = 17;
+    for(int i = 0; i < 11; i = i+2){
+        std::vector<std::string>::iterator it = table[i].begin();
+        for(int j = 0; j < count; j++){
+            it++;
+        }
+        *it = "/";
+        if(k % 2) count -= 4;
+        else count -= 2;
+        k++;
+    }
+}

@@ -4,12 +4,14 @@
 class Player{
     std::string symbol;
     std::vector<int> positions;
-    int countOfElems;
+    int countOfElems, score;
 
     public:
+    void Win();
     std::string Symbol();
     std::vector<int>* Positions();
     int Count();
+    int Score();
     void AddPosition(int a);
     Player(std::string a);
     Player();
