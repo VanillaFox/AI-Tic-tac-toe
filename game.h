@@ -17,7 +17,9 @@ class Game{
         DOWN,
         LEFT,
         RIGHT,
-        ENTER
+        ENTER,
+        RESTART,
+        HELP
     };
     Dirs dir;
     Player player1, player2, *player;
@@ -42,6 +44,7 @@ class Game{
     void WinText();
     void Replay();
     void WhoPlayText();
+    void HowToPlayText();
     void FinalWinText();
     int Win();
     int CheckWinnner();

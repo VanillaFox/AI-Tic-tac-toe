@@ -50,6 +50,12 @@ void Game::EnterMove(){
             case 'e':
                 dir = ENTER;
                 break;
+            case 'r':
+                dir = RESTART;
+                break;
+            case 'h':
+                dir = HELP;
+                break;
             default:
                 dir = NEUTRAL;
                 break;
@@ -94,6 +100,13 @@ void Game::Move(){
             SetNeuDir();
             break;
 
+        case 6:
+            RestartGame();
+            SetNeuDir();
+            break;
+        
+        case 7:
+            HowToPlayText();
         default:
             SetNeuDir();
     }
@@ -151,20 +164,38 @@ void Game::RestartGame(){
     map.RestartMap();
 }
 
+void Game::HowToPlayText(){
+    int r = std::system("clear");
+    std::cout << "Use WASD to move;\n";
+    std::cout << "Press \"e\" to fix the selection;\n";
+    std::cout << "Press \"r\" to restart the game;\n";
+    std::cout << "Press \"q\" to exit.\n";
+    std::cout << std::endl;
+    std::cout << "Press any key to return to the game\n> ";
+    std::cin >> choice;
+}
+
 void Game::WhoPlayText(){
+    std::cout << "Press \"h\" to get help.\n";
+    std::cout << std::endl;
     std::cout << "Now is " << player->Symbol() << "'s step!\n";
 }
 
 
 void Game::WinText(){
-    std::cout << player->Symbol() << " is win!\n";
+    std::cout << player->Symbol() << " is won!\n";
     std::cout << "Current score:\n PlayerX: " << player1.Score() << "\n PlayerO: " << player2.Score();
     std::cout << "\nWant to replay? [y/n] ";
 }
 
 
 void Game::FinalWinText(){
+    std::cout << std::endl;
+    if(player1.Score() == player2.Score()){
+        std::cout << "Draw!\n";
+        return;
+    }
     if(player1.Score() > player2.Score()) player = &player1;
     else player = &player2;
-    std::cout << player->Symbol() << " is win!\n";
+    std::cout << player->Symbol() << " is won!\n";
 }
