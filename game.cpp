@@ -4,7 +4,8 @@
 #include "map.h"
 
 
-Game::Game():gameOver(false), playerNumber(1), player1(X), player2(O), winNumber(0){
+Game::Game():gameOver(false), playerNumber(1),
+            player1(X), player2(O), winNumber(0){
     player = &player1;
     StartGame();
 }
@@ -19,7 +20,7 @@ void Game::StartGame(){
         map.PrintTable();
         usleep(7700);
         if(winNumber){
-            player->Win();
+            if(winNumber != 9) player->Win();
             WinText();
             Replay();
         }
@@ -96,6 +97,10 @@ void Game::Move(){
                 map.PrintWinLine(line);
                 break;
             }
+            if(map.FullMap(&player1, &player2)){
+                winNumber = 9;
+                break;
+            }
             SwitchPlayerSymbol();
             SetNeuDir();
             break;
@@ -107,8 +112,11 @@ void Game::Move(){
         
         case 7:
             HowToPlayText();
+            break;
+
         default:
             SetNeuDir();
+            break;
     }
 }
 
@@ -183,7 +191,8 @@ void Game::WhoPlayText(){
 
 
 void Game::WinText(){
-    std::cout << player->Symbol() << " is won!\n";
+    if(winNumber == 9) std::cout << "Draw!\n";
+    else std::cout << player->Symbol() << " is won!\n";
     std::cout << "Current score:\n PlayerX: " << player1.Score() << "\n PlayerO: " << player2.Score();
     std::cout << "\nWant to replay? [y/n] ";
 }

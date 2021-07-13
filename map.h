@@ -51,6 +51,7 @@ class Map{
     void Move(char a);
     void PrintTable();
     bool SetPlayerSym(Player* a);
+    bool FullMap(Player *a, Player *b);
     void RestartMap();
     void PrintWinLine(int a);
 

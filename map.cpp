@@ -188,3 +188,8 @@ void Map::PrintRightLine(int a){
         k++;
     }
 }
+
+bool Map::FullMap(Player* a, Player* b){
+    if(a->Count() + b->Count() == 9) return true;
+    return false;
+}
