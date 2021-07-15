@@ -26,6 +26,7 @@ void Game::StartGame(){
         }
     }
     FinalWinText();
+    map.PrintFreePlaces();
     std::cout << "EXIT!\n";
 }
 
@@ -97,7 +98,7 @@ void Game::Move(){
                 map.PrintWinLine(line);
                 break;
             }
-            if(map.FullMap(&player1, &player2)){
+            if(map.FullMap()){
                 winNumber = 9;
                 break;
             }

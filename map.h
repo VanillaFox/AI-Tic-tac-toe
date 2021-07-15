@@ -1,11 +1,14 @@
 #pragma once
+#include "player.h"
 #include <iostream>
 #include <vector>
-#include "player.h"
+#include <algorithm>
+#include <random>
 
 class Map{
-    std::vector<std::vector<std::string>> table;
-    std::vector<std::vector<std::string>> startTable = {
+    using vecString = std::vector<std::string>;
+    std::vector<vecString> table;
+    std::vector<vecString> startTable = {
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
@@ -18,12 +21,18 @@ class Map{
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"}
     };
-
-    std::vector<std::string>::iterator iter;
+    std::vector<int> StartFreePlaces = {
+        1, 2, 3, 4, 5, 6, 7, 8, 9
+    };
+    std::vector<int> freePlaces;
+    std::vector<std::vector<vecString::iterator>> iters;
+    vecString::iterator iter;
     int strNumber, colNumber;
-    const int startStr = 1, startCol = 3;
+    const int startStr = 0, startCol = 0;
+    const int firstCol = 3, firstStr = 1;
     const int intervBetwStrs = 4, intervBetwCols = 6;
     std::string curSymbol, cursor = "@", playerSym;
+    void MoveToNextCol();
     void MoveLeft();
     void Left();
     void MoveRight();
@@ -33,17 +42,18 @@ class Map{
     void MoveDown();
     void Down();
     void NewLine();
-    void MoveToColomn();
     void SetSym(Player* a);
     void SetCursor();
     void SetSymbol();
-    void Choice();
-    void MoveToNextCol();
-    void MoveToPrevCol();
     void PrintVerticalLine(int a);
     void PrintHorizontalLine(int a);
     void PrintLeftLine(int a);
     void PrintRightLine(int a);
+    void DeletePlace(int a);
+    void RandomPlaces();
+    void FillIters();
+    void SetCurSym();
+    void SetSymByAI(Player* player, int step);
     int Position();
 
     public:
@@ -51,8 +61,8 @@ class Map{
     void Move(char a);
     void PrintTable();
     bool SetPlayerSym(Player* a);
-    bool FullMap(Player *a, Player *b);
+    bool FullMap();
     void RestartMap();
     void PrintWinLine(int a);
-
+    void PrintFreePlaces();
 };
