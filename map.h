@@ -65,4 +65,5 @@ class Map{
     void RestartMap();
     void PrintWinLine(int a);
     void PrintFreePlaces();
+    std::vector<int> Places();
 };

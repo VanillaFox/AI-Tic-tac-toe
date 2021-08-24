@@ -32,3 +32,7 @@ void Player::Win(){
 
 Player::Player(){}
 Player::Player(std::string a): symbol(a), countOfElems(0), score(0){}
+
+// int Player::Maxmin(std::vector<std::vector<std::string>> table, Player* player, std::vector<int> places){
+
+// }

@@ -235,3 +235,7 @@ bool Map::FullMap(){
     if(freePlaces.empty()) return true;
     return false;
 }
+
+std::vector<int> Map::Places(){
+    return freePlaces;
+}

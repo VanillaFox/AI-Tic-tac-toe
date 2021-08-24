@@ -48,6 +48,22 @@ class Game{
     void FinalWinText();
     int Win();
     int CheckWinnner();
+    int Maxmin(std::vector<std::vector<std::vector<std::vector<std::string>>::iterator>> table, char a, std::vector<int> places){
+        if(CheckWinnner() && a == 'a'){
+            return 20;
+        }
+        else if(CheckWinnner() && a == 'h'){
+            return -20;
+        }
+        else if(places.empty()){
+            return 0;
+        }
+        std::vector<int> moves;
+        for(int i = 0; i < places.size(); i++){
+            
+        }
+    }
+
 
     public:
     Game();
