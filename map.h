@@ -5,8 +5,9 @@
 #include <algorithm>
 #include <random>
 
+using vecString = std::vector<std::string>;
+
 class Map{
-    using vecString = std::vector<std::string>;
     std::vector<vecString> table;
     std::vector<vecString> startTable = {
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
@@ -47,8 +48,8 @@ class Map{
     void SetSymbol();
     void PrintVerticalLine(int a);
     void PrintHorizontalLine(int a);
-    void PrintLeftLine(int a);
-    void PrintRightLine(int a);
+    void PrintLeftLine();
+    void PrintRightLine();
     void DeletePlace(int a);
     void RandomPlaces();
     void FillIters();
@@ -66,4 +67,6 @@ class Map{
     void PrintWinLine(int a);
     void PrintFreePlaces();
     std::vector<int> Places();
+    std::vector<std::vector<vecString::iterator>> Iters();
+    std::vector<int> FreePlaces();
 };

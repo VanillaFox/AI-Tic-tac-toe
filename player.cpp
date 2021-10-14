@@ -26,7 +26,7 @@ int Player::Score(){
     return score;
 }
 
-void Player::Win(){
+void Player::IncreaseScore(){
     score += 10;
 }
 

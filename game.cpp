@@ -4,8 +4,8 @@
 #include "map.h"
 
 
-Game::Game():gameOver(false), playerNumber(1),
-            player1(X), player2(O), winNumber(0){
+Game::Game():gameOver(false), playerNum(1),
+            player1(X), player2(O), winlineNum(0){
     player = &player1;
     StartGame();
 }
@@ -19,14 +19,14 @@ void Game::StartGame(){
         Move();
         map.PrintTable();
         usleep(7700);
-        if(winNumber){
-            if(winNumber != 9) player->Win();
+        if(winlineNum){
+            if(winlineNum != 9) player->IncreaseScore();
             WinText();
             Replay();
         }
     }
     FinalWinText();
-    map.PrintFreePlaces();
+    // map.PrintFreePlaces();
     std::cout << "EXIT!\n";
 }
 
@@ -93,13 +93,13 @@ void Game::Move(){
 
         case 5:
             if(!map.SetPlayerSym(player)) break;
-            line = CheckWinnner();
+            line = CheckWinline(player);
             if(line){
                 map.PrintWinLine(line);
                 break;
             }
             if(map.FullMap()){
-                winNumber = 9;
+                winlineNum = 9;
                 break;
             }
             SwitchPlayerSymbol();
@@ -128,15 +128,15 @@ void Game::SetNeuDir(){
 
 
 void Game::SwitchPlayerSymbol(){
-    if(playerNumber)
+    if(playerNum)
         player = &player2;
     else
         player = &player1;
-    playerNumber = (playerNumber + 1) % 2;
+    playerNum = (playerNum + 1) % 2;
 }
 
 
-int Game::Win(){
+int Game::SearchWinline(){
     bool win;
     for(int i = 0; i < winStrategy.size(); i++){
         win = true;
@@ -151,9 +151,9 @@ int Game::Win(){
 }
 
 
-int Game::CheckWinnner(){
-    if(player->Count() > 2) winNumber = Win();
-    return winNumber;
+int Game::CheckWinline(Player* player){
+    if(player->Count() > 2) winlineNum = SearchWinline();
+    return winlineNum;
 }
 
 
@@ -168,10 +168,11 @@ void Game::RestartGame(){
     player1.ClearAll();
     player2.ClearAll();
     player = &player1;
-    playerNumber = 1;
-    winNumber = 0;
+    playerNum = 1;
+    winlineNum = 0;
     map.RestartMap();
 }
+
 
 void Game::HowToPlayText(){
     int r = std::system("clear");
@@ -192,7 +193,7 @@ void Game::WhoPlayText(){
 
 
 void Game::WinText(){
-    if(winNumber == 9) std::cout << "Draw!\n";
+    if(winlineNum == 9) std::cout << "Draw!\n";
     else std::cout << player->Symbol() << " is won!\n";
     std::cout << "Current score:\n PlayerX: " << player1.Score() << "\n PlayerO: " << player2.Score();
     std::cout << "\nWant to replay? [y/n] ";
@@ -209,3 +210,26 @@ void Game::FinalWinText(){
     else player = &player2;
     std::cout << player->Symbol() << " is won!\n";
 }
+
+
+// int Game::MiniMax(std::string winsym, std::vector<int> empidx, std::vector<std::vector<std::vector<std::string>::iterator>> iters){
+//     // std::vector<std::vector<std::vector<std::string>::iterator>> newiters = map.Iters();
+
+//     // std::vector<int> moves, emptyidxs = map.FreePlaces();
+
+//     if(CheckWinline(aiplay)){
+//         if(aiplay->Symbol() == winsym){
+//             return 10;
+//         }
+//         else{
+//             return -10;
+//         }
+//     }
+
+//     // if()
+
+
+
+
+//     return 0;
+// }

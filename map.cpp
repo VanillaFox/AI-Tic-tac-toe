@@ -16,7 +16,7 @@ void Map::RestartMap(){
 }
 
 void Map::FillIters(){
-    std::vector<std::vector<std::string>::iterator> vec;
+    std::vector<vecString::iterator> vec;
     strNumber = firstStr;
     for(int i = 0; i < 3; i++){
         NewLine();
@@ -172,8 +172,8 @@ void Map::PrintTable(){
 void Map::PrintWinLine(int a){
     if(a < 4) PrintHorizontalLine(a);
     else if(a < 7) PrintVerticalLine(a);
-    else if(a == 7) PrintLeftLine(a);
-    else if(a == 8) PrintRightLine(a);
+    else if(a == 7) PrintLeftLine();
+    else if(a == 8) PrintRightLine();
 }
 
 void Map::PrintVerticalLine(int a){
@@ -201,7 +201,7 @@ void Map::PrintHorizontalLine(int a){
     }    
 }
 
-void Map::PrintLeftLine(int a){
+void Map::PrintLeftLine(){
     int count = 1;
     int k = 1;
     for(int i = 0; i < 11; i = i+2){
@@ -216,7 +216,7 @@ void Map::PrintLeftLine(int a){
     }
 }
 
-void Map::PrintRightLine(int a){
+void Map::PrintRightLine(){
     int k = 1;
     int count = 17;
     for(int i = 0; i < 11; i = i+2){
@@ -237,5 +237,14 @@ bool Map::FullMap(){
 }
 
 std::vector<int> Map::Places(){
+    return freePlaces;
+}
+
+
+std::vector<std::vector<vecString::iterator>> Map::Iters(){
+    return iters;
+}
+
+std::vector<int> Map::FreePlaces(){
     return freePlaces;
 }

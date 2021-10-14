@@ -9,7 +9,8 @@
 class Game{
     bool  gameOver;
     Map map;
-    int playerNumber, winLine = 3, line, winNumber;
+    int playerNum, playAiNum;
+    int winLine = 3, line, winlineNum;
     std::string X = "X", O = "O", choice;
     enum Dirs{
         NEUTRAL,
@@ -23,6 +24,7 @@ class Game{
     };
     Dirs dir;
     Player player1, player2, *player;
+    Player aiplay1, aiplay2, *aiplay;
     std::vector<std::vector<int>> winStrategy{
         {1, 2, 3},
         {4, 5, 6},
@@ -34,9 +36,9 @@ class Game{
         {3, 5, 7}
     };
     
+    // void SwitchPlayerSymbol(int& playNum, Player* player, Player* player1, Player* player2);
     void SwitchPlayerSymbol();
     void SetNeuDir();
-    void SwichPlayer();
     void Move();
     void EnterMove();
     void StartGame();
@@ -46,25 +48,9 @@ class Game{
     void WhoPlayText();
     void HowToPlayText();
     void FinalWinText();
-    int Win();
-    int CheckWinnner();
-    int Maxmin(std::vector<std::vector<std::vector<std::vector<std::string>>::iterator>> table, char a, std::vector<int> places){
-        if(CheckWinnner() && a == 'a'){
-            return 20;
-        }
-        else if(CheckWinnner() && a == 'h'){
-            return -20;
-        }
-        else if(places.empty()){
-            return 0;
-        }
-        std::vector<int> moves;
-        for(int i = 0; i < places.size(); i++){
-            
-        }
-    }
-
-
+    int SearchWinline();
+    int CheckWinline(Player* player);
+    // int MiniMax(std::string winsym, std::vector<int> empidx, std::vector<std::vector<std::vector<std::string>::iterator>> iters);
     public:
     Game();
     
