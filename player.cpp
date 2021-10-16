@@ -22,6 +22,10 @@ void Player::ClearAll(){
     countOfElems = 0;
 }
 
+std::vector<int> Player::Pos(){
+    return positions;
+}
+
 int Player::Score(){
     return score;
 }
@@ -33,6 +37,12 @@ void Player::IncreaseScore(){
 Player::Player(){}
 Player::Player(std::string a): symbol(a), countOfElems(0), score(0){}
 
-// int Player::Maxmin(std::vector<std::vector<std::string>> table, Player* player, std::vector<int> places){
-
-// }
+void Player::DeletePosition(int a){
+    for(std::vector<int>::iterator it = positions.begin(); it != positions.end(); it++){
+        if(*it == a){
+            positions.erase(it);
+            break;
+        }
+    }
+    countOfElems--;
+}

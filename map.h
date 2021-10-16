@@ -11,11 +11,11 @@ class Map{
     std::vector<vecString> table;
     std::vector<vecString> startTable = {
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
-        {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
+        {" ", " ", " ", "X", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
         {"-----------------------\n"},
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
-        {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
+        {" ", " ", " ", " ", " ", " ", " | ", " ", " ", "X", " ", " ", " | ", " ", " ", "O", " ", " ", " \n"},
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
         {"-----------------------\n"},
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
@@ -23,10 +23,8 @@ class Map{
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"}
     };
     std::vector<int> StartFreePlaces = {
-        1, 2, 3, 4, 5, 6, 7, 8, 9
+        2, 3, 4, 7, 8, 9
     };
-    std::vector<int> freePlaces;
-    std::vector<std::vector<vecString::iterator>> iters;
     vecString::iterator iter;
     int strNumber, colNumber;
     const int startStr = 0, startCol = 0;
@@ -50,7 +48,6 @@ class Map{
     void PrintHorizontalLine(int a);
     void PrintLeftLine();
     void PrintRightLine();
-    void DeletePlace(int a);
     void RandomPlaces();
     void FillIters();
     void SetCurSym();
@@ -59,6 +56,10 @@ class Map{
 
     public:
     Map();
+    void DeletePlace(int a);
+
+    std::vector<int> freePlaces;
+
     void Move(char a);
     void PrintTable();
     bool SetPlayerSym(Player* a);
@@ -69,4 +70,6 @@ class Map{
     std::vector<int> Places();
     std::vector<std::vector<vecString::iterator>> Iters();
     std::vector<int> FreePlaces();
+    std::vector<std::vector<vecString::iterator>> iters;
+
 };

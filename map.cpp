@@ -10,7 +10,7 @@ void Map::RestartMap(){
     table = startTable;
     strNumber = startStr;
     colNumber = startCol;
-    *iters[strNumber][colNumber] = cursor;
+    // *iters[strNumber][colNumber] = cursor;
     curSymbol = " ";
     RandomPlaces();
 }

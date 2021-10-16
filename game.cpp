@@ -7,7 +7,8 @@
 Game::Game():gameOver(false), playerNum(1),
             player1(X), player2(O), winlineNum(0){
     player = &player1;
-    StartGame();
+    // StartGame();
+    AIGame();
 }
 
 
@@ -136,7 +137,7 @@ void Game::SwitchPlayerSymbol(){
 }
 
 
-int Game::SearchWinline(){
+int Game::SearchWinline(Player* player){
     bool win;
     for(int i = 0; i < winStrategy.size(); i++){
         win = true;
@@ -152,7 +153,10 @@ int Game::SearchWinline(){
 
 
 int Game::CheckWinline(Player* player){
-    if(player->Count() > 2) winlineNum = SearchWinline();
+    std::cout << "CHECK\n";
+    std::cout << player->Count() << std::endl;
+    if(player->Count() > 2) winlineNum = SearchWinline(player);
+    std::cout << "WINLINE " << winlineNum << std::endl;
     return winlineNum;
 }
 
@@ -211,25 +215,142 @@ void Game::FinalWinText(){
     std::cout << player->Symbol() << " is won!\n";
 }
 
+void Game::AIGame(){
+    map.PrintTable();
+    player1.AddPosition(1);
+    // player1.AddPosition(7);
+    player1.AddPosition(5);
+    // player2.AddPosition(2);
+    player2.AddPosition(6);
+    // player2.AddPosition(9);
+    AIMove(&player2);
+    AIMove(&player1);
+    AIMove(&player2);
+}
 
-// int Game::MiniMax(std::string winsym, std::vector<int> empidx, std::vector<std::vector<std::vector<std::string>::iterator>> iters){
-//     // std::vector<std::vector<std::vector<std::string>::iterator>> newiters = map.Iters();
+void Game::AIMove(Player* play){
+    bool end = false;
+    int k = 1;
+    fc = 0;
+    int step = MiniMax(*map.FreePlaces().begin(), fc, map.iters, map.FreePlaces(), *play, player1, player2).second;
+    std::cout << "Step " << step << std::endl;
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                if(k != step){
+                    std::cout << k << std::endl; 
+                    std::cout << k << std::endl; 
+                    k++;
+                    continue;
+                }
+                std::cout << "HERE2\n";
+                *map.iters[i][j] = play->Symbol();
+                for(auto it: play->positions){
+                    std::cout << it << " ";
+                }
+                std::cout << std::endl;
+                play->AddPosition(step);
+                for(auto it: play->positions){
+                    std::cout << it << " ";
+                }
+                end = true;
+                break;
+            }
+            if(end) break;
+        }
+    fc = 0;
+    map.DeletePlace(step);
+    map.PrintTable();
+}
 
-//     // std::vector<int> moves, emptyidxs = map.FreePlaces();
 
-//     if(CheckWinline(aiplay)){
-//         if(aiplay->Symbol() == winsym){
-//             return 10;
-//         }
-//         else{
-//             return -10;
-//         }
-//     }
+//добвить выбор наилучшего хода за наименьшее кол-во ходов
+//что-то не так с добавлением ...
+// 85 IDX 2
+// 86 COUNT 9 O
+// 6 3 4 7 2 8 2 2 2
 
-//     // if()
+std::pair<int, int> Game::MiniMax(int indx, int f, std::vector<std::vector<vecString::iterator>> iterat, std::vector<int> free, Player play, Player human, Player ai){
+    fc++;
+    if(fc > 100){
+        return std::make_pair(0, indx);
+    }
 
+    std::cout << fc << " COUNT " << play.Count() << " " << play.Symbol() << std::endl;
+    std::vector<int> pos = play.Pos();
+    for(int p = 0; p < play.Count(); p++){
+        std::cout << pos[p] << " "; 
+    }
+    std::cout << std::endl;
 
-
-
-//     return 0;
-// }
+    std::vector<std::pair<int, int>> moves;
+    // std::vector<std::pair<std::pair<int, int>, int>> moves;
+    if(CheckWinline(&play)){
+        if(play.Symbol() == ai.Symbol()){
+            return std::make_pair(-10, indx);
+        }
+        else{
+            return std::make_pair(10, indx);
+        }
+    }
+    if(free.empty()){
+        return std::make_pair(0, indx);
+    }
+    int l;
+    std::vector<int>::iterator it;
+    int result, idx;
+    
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            it = std::find(free.begin(), free.end(), i*3 + j+1);
+            if(it != free.end()){
+                *iterat[i][j] = "*";
+                idx = *it;
+                std::cout << fc << " IDX " << idx << std::endl;
+                free.erase(it);
+                if(play.Symbol() == ai.Symbol()){
+                    human.AddPosition(idx);
+                    l = MiniMax(idx, f, iterat, free, human, human, ai).first;
+                    // std::cout << "ADDhuman " << l << " " << idx << "|" << std::endl;
+                    moves.push_back(std::make_pair(l, idx));
+                    human.DeletePosition(idx);
+                }else{
+                    ai.AddPosition(idx);
+                    l = MiniMax(idx, f, iterat, free, ai, human, ai).first;
+                    // std::cout << "ADD " << l << " " << idx << "|\n";
+                    moves.push_back(std::make_pair(l, idx));
+                    ai.DeletePosition(idx);
+                    // moves.push_back(std::make_pair(MiniMax(idx, iterat, free, ai, human, ai).first, idx));
+                }
+            }
+            free.push_back(idx);
+        }
+    }
+    std::cout << moves.size() << std::endl;
+    int beststep = 0, bestscore;
+    std::cout << "MOVES\n";
+    for(auto it: moves){
+        std::cout << it.first << " " << it.second << std::endl;
+    }
+    if(play.Symbol() == ai.Symbol()){
+        std::cout << "AI\n";
+        bestscore = -1000;
+        for(int i = 0; i < moves.size(); i++){
+            if(moves[i].first > bestscore){
+                beststep = moves[i].second;
+                bestscore = moves[i].first;
+            }
+        }
+    }
+    else{
+        std::cout << "HUMAN\n";
+        bestscore = 1000;
+        for(int i = 0; i < moves.size(); i++){
+            if(moves[i].first < bestscore){
+                beststep = moves[i].second;
+                bestscore = moves[i].first;
+            }
+        }
+    }
+    std::cout << "BestScore " << bestscore << " beststep " << beststep << std::endl;
+    return std::make_pair(bestscore, beststep);
+}

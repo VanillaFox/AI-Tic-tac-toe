@@ -23,6 +23,7 @@ class Game{
         HELP
     };
     Dirs dir;
+    int fc = 0;
     Player player1, player2, *player;
     Player aiplay1, aiplay2, *aiplay;
     std::vector<std::vector<int>> winStrategy{
@@ -35,6 +36,7 @@ class Game{
         {1, 5, 9},
         {3, 5, 7}
     };
+    std::string str = "*";
     
     // void SwitchPlayerSymbol(int& playNum, Player* player, Player* player1, Player* player2);
     void SwitchPlayerSymbol();
@@ -48,9 +50,11 @@ class Game{
     void WhoPlayText();
     void HowToPlayText();
     void FinalWinText();
-    int SearchWinline();
+    int SearchWinline(Player* player);
     int CheckWinline(Player* player);
-    // int MiniMax(std::string winsym, std::vector<int> empidx, std::vector<std::vector<std::vector<std::string>::iterator>> iters);
+    void AIGame();
+    void AIMove(Player* play);
+    std::pair<int, int> MiniMax(int indx, int f, std::vector<std::vector<vecString::iterator>> iters, std::vector<int> free, Player play, Player human, Player ai);
     public:
     Game();
     
