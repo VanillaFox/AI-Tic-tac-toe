@@ -23,7 +23,15 @@ class Map{
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"}
     };
     std::vector<int> StartFreePlaces = {
-        2, 3, 4, 7, 8, 9
+        // 1,
+        2,
+        3,
+        4,
+        // 5,
+        // 6,
+        7,
+        8,
+        9
     };
     vecString::iterator iter;
     int strNumber, colNumber;
