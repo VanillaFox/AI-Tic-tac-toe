@@ -194,24 +194,16 @@ void Game::FinalWinText(){
 
 void Game::AIGame(){
     map.PrintTable();
-    player1.AddPosition(1);
+    // player1.AddPosition(1);
     player1.AddPosition(5);
-    // player1.AddPosition(4);
     player2.AddPosition(6);
 
-    // player1.AddPosition(3);
-    // player2.AddPosition(9);
-    // player2.AddPosition(8);
-
-    // player2.AddPosition(9);
-
-    // AIMove(player1, player2);
-    // std::cout << "-----------------------------------------------------------------------------------------\n";
+    
     AIMove(player2, player1);
-    // AIMove(player1, player2);
-    // AIMove(player1, player2);
-    // AIMove(player2, player1);
-
+    AIMove(player1, player2);
+    AIMove(player2, player1);
+    AIMove(player1, player2);
+    AIMove(player2, player1);
 
 }
 
@@ -280,7 +272,7 @@ std::pair<std::pair<int, int>, int> Game::MiniMax(int indx, int f, std::vector<i
         return std::make_pair(std::make_pair(0, indx), f);
     }
 
-    // if(f > 4){
+    // if(f > 2){
     //     return std::make_pair(std::make_pair(0, indx), f);
     // }
     f++;
@@ -305,21 +297,25 @@ std::pair<std::pair<int, int>, int> Game::MiniMax(int indx, int f, std::vector<i
                     cur = MiniMax(id, f, free, ai, human, ai);
                     human.DeletePosition(id);
                 }
-                moves.push_back(std::make_pair(std::make_pair(cur.first.first, id), cur.second));
+                // moves.push_back(std::make_pair(std::make_pair(cur.first.first, id), cur.second));
+                moves.push_back(cur);
                 free.push_back(id);
             }
         }
     }
-    std::cout << "MOVE " << play.Symbol() << std::endl;
+    // std::cout << "MOVE " << play.Symbol() << std::endl;
     // for(auto it: moves){
     //     std::cout << it.first.first << " " << it.first.second << " " << it.second << std::endl;
     // }
+    // std::cout << moves.size() << " " << free.size() << std::endl;
     int bestscore, beststep, bestf = 100000;
     if(play.Symbol() == ai.Symbol()){
         bestscore = -100;
         for(int i = 0; i < moves.size(); i++){
             if((moves[i].first.first > bestscore) || ((moves[i].first.first == bestscore) && (moves[i].second < bestf))){
-                beststep = i;
+                beststep = free[i];
+                // beststep = i;
+
                 bestscore = moves[i].first.first;
                 bestf = moves[i].second;
             }
@@ -329,13 +325,16 @@ std::pair<std::pair<int, int>, int> Game::MiniMax(int indx, int f, std::vector<i
         bestscore = 100;
         for(int i = 0; i < moves.size(); i++){
             if((moves[i].first.first < bestscore )|| ((moves[i].first.first == bestscore) && (moves[i].second < bestf))){
-                beststep = i;
+                beststep = free[i];
+                // beststep = i;
                 bestscore = moves[i].first.first;
                 bestf = moves[i].second;
             }
         }
     }
-    std::cout << "BESTSCORE " << bestscore << " BESTSTEP " << moves[beststep].first.second <<" BESTF " << bestf << " NOWF " << f<< std::endl;
-    return moves[beststep];
+    // std::cout << "BESTSCORE " << bestscore << " BESTSTEP " << moves[beststep].first.second <<" BESTF " << bestf << " NOWF " << f<< std::endl;
+    return std::make_pair(std::make_pair(bestscore, beststep), bestf);
+    // return moves[beststep];
+
 }
 
