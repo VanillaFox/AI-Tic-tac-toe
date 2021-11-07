@@ -20,4 +20,5 @@ class Player{
     Player();
     void ClearAll();
     void DeletePosition(int a);
+    void SetSym(std::string a);
 };

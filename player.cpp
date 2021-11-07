@@ -46,3 +46,7 @@ void Player::DeletePosition(int a){
     }
     countOfElems--;
 }
+
+void Player::SetSym(std::string a){
+    symbol = a;
+}

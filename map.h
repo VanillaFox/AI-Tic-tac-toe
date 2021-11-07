@@ -15,7 +15,7 @@ class Map{
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
         {"-----------------------\n"},
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
-        {" ", " ", " ", " ", " ", " ", " | ", " ", " ", "X", " ", " ", " | ", " ", " ", "O", " ", " ", " \n"},
+        {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
         {"-----------------------\n"},
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"},
@@ -23,15 +23,7 @@ class Map{
         {" ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " | ", " ", " ", " ", " ", " ", " \n"}
     };
     std::vector<int> StartFreePlaces = {
-        1,
-        2,
-        3,
-        4,
-        // 5,
-        // 6,
-        7,
-        8,
-        9
+        1, 2, 3, 4, 5, 6, 7, 8, 9
     };
     vecString::iterator iter;
     int strNumber, colNumber;
@@ -51,26 +43,24 @@ class Map{
     void NewLine();
     void SetSym(Player* a);
     void SetCursor();
-    void SetSymbol();
+    void SetCurSym();
+    void SetSymByAI(Player* player, int step);
     void PrintVerticalLine(int a);
     void PrintHorizontalLine(int a);
     void PrintLeftLine();
     void PrintRightLine();
-    void RandomPlaces();
     void FillIters();
-    void SetCurSym();
-    void SetSymByAI(Player* player, int step);
     int Position();
 
     public:
     Map();
     void DeletePlace(int a);
-
-    std::vector<int> freePlaces;
+    void RandomPlaces();
 
     void Move(char a);
     void PrintTable();
     bool SetPlayerSym(Player* a);
+    void SetSymbol();
     bool FullMap();
     void RestartMap();
     void PrintWinLine(int a);
@@ -79,5 +69,5 @@ class Map{
     std::vector<std::vector<vecString::iterator>> Iters();
     std::vector<int> FreePlaces();
     std::vector<std::vector<vecString::iterator>> iters;
-
+    std::vector<int> freePlaces;
 };
