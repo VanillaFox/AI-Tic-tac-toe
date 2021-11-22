@@ -3,7 +3,8 @@
 #include "player.h"
 #include "map.h"
 
-Game::Game():gameOver(false), playerNum(1), player1(X), player2(O), winlineNum(0){
+Game::Game():gameOver(false), playerNum(1), player1(X), player2(O),
+            winlineNum(0), ai(O), human(X){
     curPlayer = &player1;
     HelloText();
     if(!gameMode){
@@ -18,8 +19,8 @@ void Game::StartGame(){
     while(!gameOver){
         int r = std::system("clear");
         WhoPlayText();
-        if(gameMode==2 && curPlayer==aiplay){
-            AIMove(*aiplay, *human);
+        if(gameMode==2 && curPlayer==aiPlay){
+            AIMove(*aiPlay, *humanPlay);
         }
         else{
             EnterMove();
@@ -30,10 +31,10 @@ void Game::StartGame(){
         if(winlineNum){
             if(winlineNum!=9){
                 if(gameMode==2){
-                    if(curPlayer==aiplay)
+                    if(curPlayer==aiPlay)
                         ai.IncreaseScore();
                     else
-                        player.IncreaseScore();
+                        human.IncreaseScore();
                 }
                 else
                     curPlayer->IncreaseScore();
@@ -167,9 +168,9 @@ std::pair<std::pair<int, int>, int> Game::MiniMax(int indx, int f, std::vector<i
     }
 
     f++;
-    // if(f == 3){
-    //     return std::make_pair(std::make_pair(0, indx), f);
-    // }
+    if(f==difficultyLvl){
+        return std::make_pair(std::make_pair(0, indx), f);
+    }
 
     std::vector<std::pair<std::pair<int, int>, int>> moves; //((score, id), f)
     std::vector<int>::iterator it;
@@ -343,21 +344,42 @@ void Game::WhoAI(){
     std::cout << ">> ";
     std::cin >> choice;
     if(choice=="N" || choice=="n"){
-        aiplay = &player1;
-        human = &player2;
+        aiPlay = &player1;
+        humanPlay = &player2;
     }
     else{
-        aiplay = &player2;
-        human = &player1;
+        aiPlay = &player2;
+        humanPlay = &player1;
     }
-    ai.SetSym(aiplay->Symbol());
-    player.SetSym(human->Symbol());
+    ai.SetSym(aiPlay->Symbol());
+    human.SetSym(humanPlay->Symbol());
+    int lvl;
+    std::cout << "Select difficulty level:\n";
+    std::cout << "\t[1]Easy\n\t[2]Medium\n\t[3]Hard\n";
+    std::cout << ">>";
+    while(1){
+        std::cin >> lvl;
+        if(lvl==1){
+            difficultyLvl = 3;
+        }
+        else if(lvl==2){
+            difficultyLvl = 5;
+        }
+        else if(lvl==3){
+            difficultyLvl = 9;
+        }
+        else{
+            std::cout << "Invalid select. Try again!\n";
+            continue;
+        }
+        break;
+    }
 }
 
 
 void Game::WhoForWhomText(){
-    std::cout << "Human: " << human->Symbol() << std::endl;
-    std::cout << "AI " << aiplay->Symbol() << std::endl;
+    std::cout << "Human: " << humanPlay->Symbol() << std::endl;
+    std::cout << "AI " << aiPlay->Symbol() << std::endl;
     std::cout << std::endl;
 }
 
@@ -367,7 +389,7 @@ void Game::WinText(){
     else{
         std::cout << curPlayer->Symbol() << " is won!\n";
         if(gameMode==2)
-            std::cout << "Current score:\n Human: " << player.Score() << "\n AI: " << ai.Score();
+            std::cout << "Current score:\n Human: " << human.Score() << "\n AI: " << ai.Score();
         else
             std::cout << "Current score:\n PlayerX: " << player1.Score() << "\n PlayerO: " << player2.Score();
     }
@@ -387,11 +409,11 @@ void Game::FinalWinText(){
         std::cout << curPlayer->Symbol() << " is won!\n";
     }
     else{
-        if(player.Score()==ai.Score()){
+        if(human.Score()==ai.Score()){
             std::cout << "Draw!\n";
             return;
         }
-        if(human->Score()>ai.Score()) std::cout << "Human ";
+        if(human.Score()>ai.Score()) std::cout << "Human ";
         else std::cout << "AI ";
         std::cout << "is won!\n";
     }

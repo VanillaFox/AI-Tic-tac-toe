@@ -10,8 +10,8 @@ class Game{
     bool  gameOver;
     Map map;
     int playerNum, playAiNum;
-    int winLine = 3, line; 
-    int winlineNum, gameMode;
+    int winLine = 3, line;
+    int winlineNum, gameMode, difficultyLvl;
     std::string X = "X", O = "O", choice;
     enum Dirs{
         NEUTRAL,
@@ -25,8 +25,8 @@ class Game{
     };
     Dirs dir;
     Player player1, player2, *curPlayer;
-    Player *aiplay, *human;
-    Player ai, player;
+    Player *aiPlay, *humanPlay;
+    Player ai, human;
     std::vector<std::vector<int>> winStrategy{
         {1, 2, 3},
         {4, 5, 6},
